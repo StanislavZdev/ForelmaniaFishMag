@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "products", uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Builder
 
 public class ProductsModel {
 
