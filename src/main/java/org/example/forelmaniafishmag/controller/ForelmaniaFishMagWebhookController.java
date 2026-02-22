@@ -25,7 +25,7 @@ public class ForelmaniaFishMagWebhookController {
         log.info("Received Tilda webhook: {}", dto);
 
         try {
-            forelmaniaFishMagWebhookService.processWebhookOrders(dto);
+            forelmaniaFishMagWebhookService.tildaWebhookOrders(dto);
             return ResponseEntity.ok("Webhook processed successfully");
         } catch (IllegalArgumentException e) {
             log.warn("Validation error: {}", e.getMessage());

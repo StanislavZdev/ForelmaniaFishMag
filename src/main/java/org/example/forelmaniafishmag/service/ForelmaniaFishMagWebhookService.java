@@ -1,6 +1,7 @@
 package org.example.forelmaniafishmag.service;
 
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.forelmaniafishmag.repository.ClientRepository;
@@ -22,6 +23,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Data
 
 public class ForelmaniaFishMagWebhookService {
 
@@ -29,16 +31,14 @@ public class ForelmaniaFishMagWebhookService {
     private final ProductRepository productRepository;
     private final ClientRepository clientRepository;
 
+    NumParser numParser;
+    CreateClientForService createClientForService;
+    CreateProductForService createProductForService;
+
     public TildaWebhookData tildaWebhookOrders(TildaWebhookRequestDTO dto) {
         log.info("Hook processing: {}", dto);
 
-        // Дополнительная валидация обязательных полей
-        if (dto.getName() == null || dto.getName().trim().isEmpty()) {
-            throw new IllegalArgumentException("Client name is required");
-            if (dto.getPhone() == null || dto.getPhone().trim().isEmpty()) {
-                throw new IllegalArgumentException("Phone number is required");
-            }
-            ClientsModel client = findOrCreateClient(dto.getName(), dto.getPhone(), dto.getEmail());
+            ClientsModel client = createClientForService.findOrCreateClient(dto.getName(), dto.getPhone(), dto.getEmail());
 
             Set<ProductsModel> products = new HashSet<>();
             if (dto.getPayment() != null && dto.getPayment().getProducts() != null) {
@@ -68,8 +68,8 @@ public class ForelmaniaFishMagWebhookService {
                     }
                 }
             }
-            Double subtotal = parseDouble(dto.getPayment() != null ? dto.getPayment().getSubtotal() : null);
-            Double deliveryPrice = parseDouble(dto.getPayment() != null ? dto.getPayment().getDeliveryPrice() : null);
+            Double subtotal = numParser.parseDouble(dto.getPayment() != null ? dto.getPayment().getSubtotal() : null);
+            Double deliveryPrice = numParser.parseDouble(dto.getPayment() != null ? dto.getPayment().getDeliveryPrice() : null);
             String orderId = dto.getPayment() != null ? dto.getPayment().getOrderId() : null;
             String delivery = dto.getPayment() != null ? dto.getPayment().getDelivery() : null;
 
@@ -88,8 +88,24 @@ public class ForelmaniaFishMagWebhookService {
                     .subtotal(subtotal)
                     .submittedAt(LocalDateTime.now())
                     .build();
-            products.forEach(tildaWebhookData ::addProduct);
+            products.forEach(tildaWebhookData::addProduct);
+            TildaWebhookData saved = tildaWebhookDataRepository.save(tildaWebhookData);
+            log.info("Webhook saved with ID: {}", saved.getId());
+            return saved;
+        }
+        ProductsModel createProduct (String name, String priceStr, String quantityStr){
+            Double price = numParser.parseDouble(priceStr);
+            Integer quantity = numParser.parseInteger(quantityStr);
 
+            ProductsModel product = ProductsModel.builder()
+                    .name(name)
+                    .price(price != null ? price : 0.0)
+                    .quantity(quantity != null ? quantity : 0)
+                    .build();
+
+            ProductsModel saved = productRepository.save(product);
+            log.info("Created new product: {} (ID: {})", saved.getName(), saved.getId());
+            return saved;
         }
     }
-}
+
