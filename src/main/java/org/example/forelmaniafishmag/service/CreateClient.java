@@ -7,7 +7,7 @@ import org.example.forelmaniafishmag.tildawebhook.model.ClientsModel;
 
 @Data
 @Slf4j
-public class CreateClientForService {
+public class CreateClient {
 
     private final ClientRepository clientRepository;
 
