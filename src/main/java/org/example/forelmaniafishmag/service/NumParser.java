@@ -1,14 +1,18 @@
 package org.example.forelmaniafishmag.service;
 
 
-import lombok.Data;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 @Slf4j
-@Data
+@RequiredArgsConstructor
+@Service
+
 public class NumParser {
 
     public Double parseDouble(String value) {

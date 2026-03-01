@@ -1,18 +1,21 @@
 package org.example.forelmaniafishmag.service;
 
 
-import lombok.Data;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.forelmaniafishmag.repository.ProductRepository;
 import org.example.forelmaniafishmag.tildawebhook.model.ProductsModel;
+import org.springframework.stereotype.Service;
 
 @Slf4j
-@Data
+@RequiredArgsConstructor
+@Service
+
 public class CreateProductForProductService {
 
     private final ProductRepository productRepository;
-
-    NumParser numParser;
+    private final NumParser numParser;
 
     public ProductsModel createProduct(String name, String priceStr, String quantityStr) {
 

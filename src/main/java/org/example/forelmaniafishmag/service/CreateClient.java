@@ -1,12 +1,16 @@
 package org.example.forelmaniafishmag.service;
 
-import lombok.Data;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.forelmaniafishmag.repository.ClientRepository;
 import org.example.forelmaniafishmag.tildawebhook.model.ClientsModel;
+import org.springframework.stereotype.Service;
 
-@Data
 @Slf4j
+@RequiredArgsConstructor
+@Service
+
 public class CreateClient {
 
     private final ClientRepository clientRepository;

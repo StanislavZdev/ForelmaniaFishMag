@@ -1,6 +1,5 @@
 package org.example.forelmaniafishmag.service;
 
-
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,9 +28,9 @@ public class ForelmaniaFishMagWebhookService {
     private final ProductRepository productRepository;
     private final ClientRepository clientRepository;
 
-    NumParser numParser;
-    CreateClient createClient;
-    ProductService productService;
+    private final NumParser numParser;
+    private final CreateClient createClient;
+    private final ProductService productService;
 
     public TildaWebhookData tildaWebhookOrders(TildaWebhookRequestDTO dto) {
         log.info("Hook processing: {}", dto);

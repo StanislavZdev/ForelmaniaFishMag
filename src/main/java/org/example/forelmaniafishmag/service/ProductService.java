@@ -1,29 +1,30 @@
 package org.example.forelmaniafishmag.service;
 
-
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.forelmaniafishmag.repository.ProductRepository;
 import org.example.forelmaniafishmag.tildawebhook.dto.TildaWebhookRequestDTO;
 import org.example.forelmaniafishmag.tildawebhook.model.ProductsModel;
+import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Slf4j
-@Data
+@RequiredArgsConstructor
+@Service
 
 public class ProductService {
 
     private final ProductRepository productRepository;
-    CreateProductForProductService createProductForProductService;
+    private final CreateProductForProductService createProductForProductService;
 
     public Set<ProductsModel> getProducts(TildaWebhookRequestDTO dto) {
 
         Set<ProductsModel> products = new HashSet<>();
 
-        if (dto.getPayment().getProducts() != null) {
+        if (dto.getPayment() != null && dto.getPayment().getProducts() != null) {
             List<String> productNames = dto.getPayment().getProducts().stream()
                     .map(TildaWebhookRequestDTO.PaymentDTO.ProductDTO::getName)
                     // дополнительная валидация name продукта
