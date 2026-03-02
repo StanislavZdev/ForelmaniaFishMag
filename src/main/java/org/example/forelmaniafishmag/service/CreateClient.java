@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.forelmaniafishmag.repository.ClientRepository;
 import org.example.forelmaniafishmag.tildawebhook.model.ClientsModel;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -15,6 +16,7 @@ public class CreateClient {
 
     private final ClientRepository clientRepository;
 
+    @Transactional
     public ClientsModel findOrCreateClient(String name, String email, String phone) {
         return clientRepository.findByPhone(phone)
                 .map(client -> {

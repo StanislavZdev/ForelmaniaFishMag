@@ -6,6 +6,7 @@ import org.example.forelmaniafishmag.repository.ProductRepository;
 import org.example.forelmaniafishmag.tildawebhook.dto.TildaWebhookRequestDTO;
 import org.example.forelmaniafishmag.tildawebhook.model.ProductsModel;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -20,6 +21,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CreateProductForProductService createProductForProductService;
 
+@Transactional
     public Set<ProductsModel> getProducts(TildaWebhookRequestDTO dto) {
 
         Set<ProductsModel> products = new HashSet<>();
